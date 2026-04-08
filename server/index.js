@@ -16,4 +16,9 @@ app.get("/", (req, res) => res.send("API running"));
 app.use("/api/auth", authRoutes);
 app.use("/api/transactions", transactionRoutes);
 
+if (require.main === module) {
+  const PORT = process.env.PORT || 4000;
+  app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+}
+
 module.exports = app;

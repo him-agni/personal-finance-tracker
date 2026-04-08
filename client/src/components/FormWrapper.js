@@ -1,26 +1,10 @@
 export default function FormWrapper({ title, children, onSubmit }) {
   return (
-    <form onSubmit={onSubmit} style={styles.form}>
-      <h2 style={styles.title}>{title}</h2>
-      {children}
-    </form>
+    <div style={{ display: 'flex', justifyContent: 'center', margin: '80px 20px' }}>
+      <form onSubmit={onSubmit} className="glass-panel" style={{ width: '100%', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <h2 style={{ textAlign: 'center', margin: 0, color: 'var(--primary-color)' }}>{title}</h2>
+        {children}
+      </form>
+    </div>
   );
 }
-
-const styles = {
-  form: {
-    background: "#fff",
-    padding: "30px",
-    borderRadius: "12px",
-    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-    maxWidth: "400px",
-    margin: "60px auto",
-    display: "flex",
-    flexDirection: "column",
-    gap: "15px",
-  },
-  title: {
-    textAlign: "center",
-    color: "rgb(224, 83, 31)",
-  },
-};

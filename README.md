@@ -1,8 +1,8 @@
 # Personal Finance Tracker
 
 A full-stack web application for tracking personal income and expenses. Built with React for the frontend and Node.js/Express for the backend, with MongoDB for data storage.
-<img width="894" height="885" alt="image" src="https://github.com/user-attachments/assets/14060904-0a0e-451e-b770-b8fe32ff3f6a" />
 
+<img width="894" height="885" alt="image" src="https://github.com/user-attachments/assets/14060904-0a0e-451e-b770-b8fe32ff3f6a" />
 
 ## Features
 
@@ -17,6 +17,7 @@ A full-stack web application for tracking personal income and expenses. Built wi
 ## Tech Stack
 
 ### Frontend
+
 - React 18
 - React Router DOM for routing
 - Recharts for data visualization
@@ -24,6 +25,7 @@ A full-stack web application for tracking personal income and expenses. Built wi
 - Context API for state management
 
 ### Backend
+
 - Node.js with Express
 - MongoDB with Mongoose
 - JWT for authentication
@@ -41,18 +43,21 @@ Before running this application, make sure you have the following installed:
 ## Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd personal-finance-tracker
    ```
 
 2. **Install server dependencies**
+
    ```bash
    cd server
    npm install
    ```
 
 3. **Install client dependencies**
+
    ```bash
    cd ../client
    npm install
@@ -61,6 +66,7 @@ Before running this application, make sure you have the following installed:
 4. **Set up environment variables**
 
    Create a `.env` file in the `server` directory with the following variables:
+
    ```
    MONGO_URI=mongodb://localhost:27017/finance-tracker
    JWT_SECRET=your-secret-key-here
@@ -72,10 +78,12 @@ Before running this application, make sure you have the following installed:
 ## Running the Application
 
 1. **Start the backend server**
+
    ```bash
    cd server
    npm run dev
    ```
+
    The server will start on http://localhost:5000
 
 2. **Start the frontend**
@@ -88,10 +96,12 @@ Before running this application, make sure you have the following installed:
 ## API Endpoints
 
 ### Authentication
+
 - `POST /api/auth/register` - Register a new user
 - `POST /api/auth/login` - Login user
 
 ### Transactions
+
 - `GET /api/transactions` - Get all user transactions
 - `POST /api/transactions` - Create a new transaction
 - `PUT /api/transactions/:id` - Update a transaction
@@ -147,5 +157,4 @@ This project is licensed under the ISC License.
 - React documentation and community
 - Express.js framework
 - MongoDB documentation
-- Recharts library for data visualization</content>
-<parameter name="filePath">c:\Users\Himani\OneDrive\Desktop\Projects\personal finance tracker\README.md
+- Recharts library for data visualization

@@ -113,186 +113,146 @@ export default function Dashboard() {
     .reduce((sum, tx) => sum + Number(tx.amount), 0);
 
   return (
-    <div style={styles.wrapper}>
+    <div style={{ maxWidth: "800px", margin: "40px auto", padding: "0 20px" }}>
       {monthlyExpense > budgetLimit && (
-        <div style={styles.alert}>
+        <div className="alert-box">
           🚨 You’ve exceeded your monthly budget of ₹{budgetLimit}!
         </div>
       )}
 
-      <header style={styles.header}>
+      <header className="flex-between" style={{ marginBottom: "20px" }}>
         <h2>Welcome, {user.name}</h2>
-        <button onClick={logout}>Logout</button>
+        <button className="danger" onClick={logout}>Logout</button>
       </header>
 
-      <div style={{ marginBottom: "20px" }}>
-        <label>
-          <strong>Set Monthly Budget:</strong>
-        </label>
-        <input
-          type="number"
-          value={budgetLimit}
-          onChange={(e) => setBudgetLimit(Number(e.target.value))}
-          style={{
-            marginLeft: "10px",
-            padding: "5px",
-            borderRadius: "6px",
-            border: "1px solid #ccc",
-          }}
-        />
+      <div className="glass-panel" style={{ marginBottom: "20px" }}>
+        <div className="flex-between">
+          <div>
+            <label style={{ display: "block", marginBottom: "8px", fontWeight: "600", color: "var(--text-muted)" }}>Set Monthly Budget</label>
+            <div className="flex-gap">
+               <span style={{ fontSize: "1.2rem", fontWeight: "bold" }}>₹</span>
+               <input
+                 type="number"
+                 value={budgetLimit}
+                 onChange={(e) => setBudgetLimit(Number(e.target.value))}
+                 style={{ width: "150px" }}
+               />
+            </div>
+          </div>
+          <div style={{ textAlign: "right" }}>
+             <h3 style={{ margin: "0 0 8px 0", color: "var(--text-muted)" }}>Summary</h3>
+             <div className="flex-gap" style={{ justifyContent: "flex-end", fontSize: "0.9rem" }}>
+                <span className="tx-income-indicator">+₹{incomeTotal}</span>
+                <span className="tx-expense-indicator">-₹{expenseTotal}</span>
+             </div>
+             <p style={{ margin: "8px 0 0 0", fontSize: "1.2rem", fontWeight: "bold", color: balance >= 0 ? "var(--primary-color)" : "var(--danger-color)" }}>Net: ₹{balance}</p>
+          </div>
+        </div>
       </div>
 
-      <div style={styles.summary}>
-        <h3>Summary</h3>
-        <p>
-          <strong>Total Income:</strong> ₹{incomeTotal}
-        </p>
-        <p>
-          <strong>Total Expense:</strong> ₹{expenseTotal}
-        </p>
-        <p>
-          <strong>Net Balance:</strong> ₹{balance}
-        </p>
+      <div className="glass-panel" style={{ marginBottom: "20px" }}>
+        <h3 style={{ marginTop: 0, marginBottom: "16px" }}>Add Transaction</h3>
+        <form onSubmit={handleSubmit} className="flex-gap" style={{ flexWrap: "wrap" }}>
+          <div style={{ flex: "1 1 200px" }}>
+            <input
+              name="title"
+              placeholder="Transaction title"
+              value={form.title}
+              onChange={(e) => setForm({ ...form, title: e.target.value })}
+              required
+            />
+          </div>
+          <div style={{ flex: "1 1 120px" }}>
+            <input
+              name="amount"
+              type="number"
+              placeholder="Amount"
+              value={form.amount}
+              onChange={(e) => setForm({ ...form, amount: e.target.value })}
+              required
+            />
+          </div>
+          <div style={{ flex: "1 1 120px" }}>
+            <select
+              name="type"
+              value={form.type}
+              onChange={(e) => setForm({ ...form, type: e.target.value })}
+            >
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+          </div>
+          <button type="submit" style={{ flex: "0 0 auto" }}>Add</button>
+        </form>
       </div>
 
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <input
-          name="title"
-          placeholder="Transaction title"
-          value={form.title}
-          onChange={(e) => setForm({ ...form, title: e.target.value })}
-          required
-        />
-        <input
-          name="amount"
-          type="number"
-          placeholder="Amount"
-          value={form.amount}
-          onChange={(e) => setForm({ ...form, amount: e.target.value })}
-          required
-        />
-        <select
-          name="type"
-          value={form.type}
-          onChange={(e) => setForm({ ...form, type: e.target.value })}
-        >
-          <option value="income">Income</option>
-          <option value="expense">Expense</option>
-        </select>
-        <button type="submit">Add</button>
-      </form>
-
-      <div style={styles.filters}>
-        <label>Filter:</label>
-        <select onChange={(e) => setFilter(e.target.value)} value={filter}>
-          <option value="all">All</option>
-          <option value="income">Income</option>
-          <option value="expense">Expense</option>
-        </select>
+      <div className="glass-panel" style={{ marginBottom: "20px" }}>
+         <div className="flex-between" style={{ marginBottom: "16px" }}>
+            <h3 style={{ margin: 0 }}>Recent Transactions</h3>
+            <div className="flex-gap">
+               <label style={{ fontSize: "0.9rem", color: "var(--text-muted)" }}>Filter:</label>
+               <select onChange={(e) => setFilter(e.target.value)} value={filter} style={{ width: "auto", padding: "8px 12px" }}>
+                 <option value="all">All</option>
+                 <option value="income">Income</option>
+                 <option value="expense">Expense</option>
+               </select>
+            </div>
+         </div>
+         <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+            {filteredTxs.length === 0 && (
+               <li style={{ textAlign: "center", color: "var(--text-muted)", padding: "20px 0" }}>No transactions found.</li>
+            )}
+            {filteredTxs.map((tx) => (
+               <li key={tx._id} className="transaction-row">
+                 {editId === tx._id ? (
+                   <div className="flex-gap" style={{ width: "100%", flexWrap: "wrap" }}>
+                     <input
+                       name="title"
+                       value={editForm.title}
+                       onChange={handleEditChange}
+                       style={{ flex: "1 1 150px" }}
+                     />
+                     <input
+                       name="amount"
+                       type="number"
+                       value={editForm.amount}
+                       onChange={handleEditChange}
+                       style={{ flex: "1 1 100px" }}
+                     />
+                     <select
+                       name="type"
+                       value={editForm.type}
+                       onChange={handleEditChange}
+                       style={{ flex: "1 1 100px" }}
+                     >
+                       <option value="income">Income</option>
+                       <option value="expense">Expense</option>
+                     </select>
+                     <div className="flex-gap" style={{ flex: "0 0 auto" }}>
+                        <button onClick={() => handleUpdate(tx._id)}>Save</button>
+                        <button className="secondary" onClick={() => setEditId(null)}>Cancel</button>
+                     </div>
+                   </div>
+                 ) : (
+                   <>
+                     <div style={{ display: "flex", flexDirection: "column", gap: "4px", flex: "1" }}>
+                        <strong style={{ fontSize: "1.05rem" }}>{tx.title}</strong>
+                        <span className={tx.type === "income" ? "tx-income-indicator" : "tx-expense-indicator"}>
+                           {tx.type === "income" ? "+" : "-"}₹{tx.amount}
+                        </span>
+                     </div>
+                     <div className="flex-gap">
+                        <button className="secondary" onClick={() => handleEditClick(tx)}>Edit</button>
+                        <button className="danger" onClick={() => handleDelete(tx._id)}>Delete</button>
+                     </div>
+                   </>
+                 )}
+               </li>
+            ))}
+         </ul>
       </div>
 
       <ChartSection transactions={transactions} />
-
-      <ul style={styles.list}>
-        {filteredTxs.map((tx) => (
-          <li key={tx._id} style={styles[tx.type]}>
-            {editId === tx._id ? (
-              <>
-                <input
-                  name="title"
-                  value={editForm.title}
-                  onChange={handleEditChange}
-                />
-                <input
-                  name="amount"
-                  type="number"
-                  value={editForm.amount}
-                  onChange={handleEditChange}
-                />
-                <select
-                  name="type"
-                  value={editForm.type}
-                  onChange={handleEditChange}
-                >
-                  <option value="income">Income</option>
-                  <option value="expense">Expense</option>
-                </select>
-                <button onClick={() => handleUpdate(tx._id)}>Save</button>
-                <button onClick={() => setEditId(null)}>Cancel</button>
-              </>
-            ) : (
-              <>
-                <div>
-                  <span>
-                    {" "}
-                    <strong>{tx.title}</strong> — ₹{tx.amount} ({tx.type}){" "}
-                  </span>
-                  <div style={{ float: "right" }}>
-                    <button onClick={() => handleEditClick(tx)}>Edit</button>
-                    <button onClick={() => handleDelete(tx._id)}>Delete</button>
-                  </div>
-                </div>
-              </>
-            )}
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }
-
-const styles = {
-  wrapper: {
-    maxWidth: "600px",
-    margin: "40px auto",
-    background: "#fff",
-    padding: "30px",
-    borderRadius: "12px",
-    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-  },
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "20px",
-  },
-  form: {
-    display: "flex",
-    gap: "10px",
-    flexWrap: "wrap",
-    marginBottom: "20px",
-  },
-  filters: {
-    marginBottom: "10px",
-  },
-  list: {
-    listStyle: "none",
-    padding: 0,
-  },
-  income: {
-    backgroundColor: "#e6ffe6",
-    padding: "10px",
-    margin: "6px 0",
-    borderRadius: "6px",
-  },
-  expense: {
-    backgroundColor: "#ffe6e6",
-    padding: "10px",
-    margin: "6px 0",
-    borderRadius: "6px",
-  },
-  summary: {
-    backgroundColor: "#f5f5f5",
-    padding: "20px",
-    borderRadius: "8px",
-    marginBottom: "20px",
-  },
-  alert: {
-    backgroundColor: "#ffe0e0",
-    color: "#d00000",
-    padding: "15px",
-    borderRadius: "8px",
-    marginBottom: "20px",
-    fontWeight: "bold",
-  },
-};

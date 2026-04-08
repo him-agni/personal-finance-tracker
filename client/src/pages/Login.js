@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import API from "../utils/axios";
 import { AuthContext } from "../context/AuthContext";
 import FormWrapper from "../components/FormWrapper";
@@ -24,11 +24,11 @@ export default function Login() {
   };
 
   return (
-    <FormWrapper title="Login" onSubmit={handleSubmit}>
+    <FormWrapper title="Welcome Back" onSubmit={handleSubmit}>
       <input
         name="email"
         type="email"
-        placeholder="Email"
+        placeholder="Email Address"
         onChange={handleChange}
         required
       />
@@ -39,7 +39,10 @@ export default function Login() {
         onChange={handleChange}
         required
       />
-      <button type="submit">Login</button>
+      <button type="submit">Log In</button>
+      <p style={{ textAlign: 'center', marginTop: '10px', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+        Don't have an account? <Link to="/register" style={{ color: 'var(--primary-color)', textDecoration: 'none' }}>Register here</Link>
+      </p>
     </FormWrapper>
   );
 }

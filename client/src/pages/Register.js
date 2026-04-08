@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import API from "../utils/axios";
 import { AuthContext } from "../context/AuthContext";
 import FormWrapper from "../components/FormWrapper";
@@ -24,12 +24,12 @@ export default function Register() {
   };
 
   return (
-    <FormWrapper title="Register" onSubmit={handleSubmit}>
-      <input name="name" placeholder="Name" onChange={handleChange} required />
+    <FormWrapper title="Create an Account" onSubmit={handleSubmit}>
+      <input name="name" placeholder="Full Name" onChange={handleChange} required />
       <input
         name="email"
         type="email"
-        placeholder="Email"
+        placeholder="Email Address"
         onChange={handleChange}
         required
       />
@@ -41,6 +41,9 @@ export default function Register() {
         required
       />
       <button type="submit">Register</button>
+      <p style={{ textAlign: 'center', marginTop: '10px', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+        Already have an account? <Link to="/login" style={{ color: 'var(--primary-color)', textDecoration: 'none' }}>Log in</Link>
+      </p>
     </FormWrapper>
   );
 }
